@@ -7,15 +7,15 @@ VideoUrlParser是一款基于PHP根据视频URL抓取视频信息的工具，支
 v1.2
 
 ##更新
-[2012-02-25]
-[修正]ku6部分网址不能解析bug
-[2012-02-24]
-[修正]tudou网因gzip导致的解析失败
+[2012-02-25]  
+[修正]ku6部分网址不能解析bug  
+[2012-02-24]  
+[修正]tudou网因gzip导致的解析失败  
 [增强]支持sohuTV、新浪视频、腾讯视频
 
 ##用法
-require_once "VideoUrlParser.class.php";
-$url = "http://v.youku.com/v_show/id_XMjkwMzc0Njg4.html";
+require_once "VideoUrlParser.class.php";  
+$url = "http://v.youku.com/v_show/id_XMjkwMzc0Njg4.html";  
 $info = VedioUrlParser::parse($url);
 
 ##作者
