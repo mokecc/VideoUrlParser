@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>VideoUrlParser演示</title>
+<style>
+body{ font-size:14px; line-height:22px; font-family:"微软雅黑", Verdana, Geneva, sans-serif;}
+input,textarea{ font-family:"微软雅黑", Verdana, Geneva, sans-serif; padding:3px; font-size:12px; }
+h3{ clear:both;}
+li{ padding:2px 0; list-style:none;}
+</style>
+<script src="http://code.jquery.com/jquery-1.6.2.min.js" type="text/javascript"></script>
+<script src="http://www.hdj.me/demos/inputdefault/js/jquery.inputDefault.js" type="text/javascript"></script>
+<script>
+$(function(){
+	$('[fs]').inputDefault();
+	
+	var $result = $('#result');
+	
+	$('#submit').click(function(){
+		var url = $('#url').val();
+		if(!url){
+			$result.html("<font color=red>请输入视频地址</font>");
+			return false;
+		}
+		
+		$result.html("<font color=green>视频加载中...</font>");
+		
+		$('.open_vedio').live('click', function(){
+			$(this).hide();
+			$(this).next('.vedio').show();
+		});
+		
+		$('.close_vedio').live('click', function(){
+			$(this).parent().parent().hide();
+			$(this).parent().parent().prev('.open_vedio').show();
+		});
+		
+		
+		$.ajax({
+			url: 'server.php',
+			data: {url: url},
+			dataType: 'json',
+			type: 'POST',
+			success: function(json){
+				if(!json.status){
+					$result.html("<font color=red>暂不支持该视频地址</font>");
+					return false;
+				}else{
+					var html = "<div style='border:1px #CCC solid; padding:3px; float:left;'>"
+						+ "		<a class='open_vedio' href='javascript:;' alt='"+json.data.title+"'>"
+						+ "		<img width='136' height='104' src='"+json.data.img+"' /></a>"
+						+ "		<div class='vedio' style='display:none;'>"
+						+ "			<div>"
+						+ "				<a style='float:right' target='_new' href='"+json.data.url+"'>"+json.data.title+"</a>"
+						+ "				<a class='close_vedio' href='javascript:;'>关闭</a>"
+						+ "			</div>"
+						+ json.data.object
+						+ "		</div>"
+						+ "</div>";
+					$result.html(html);
+					return false;
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+<h3>概述</h3>
+<ul>
+	<li>根据视频URL抓取视频信息，包括缩略图、链接地址、播放地址等。</li>
+</ul>
+
+<h3>版本</h3>
+<ul>
+	<li>v1.1beta</li>
+</ul>
+
+<h3>用法</h3>
+<ul>
+	<li>
+    	<pre>
+require_once "VedioUrlParser.class.php";
+$url = "http://v.youku.com/v_show/id_XMjkwMzc0Njg4.html";
+VedioUrlParser::parse($url);
+        </pre>
+    </li>
+</ul>
+
+<h3>下载</h3>
+<ul>
+	<li><a href="./VideoUrlParser.rar">VideoUrlParser.rar</a></li>
+</ul>
+
+<h3>演示</h3>
+<ul>
+	<li>粘贴视频播放页地址</li>
+    <li><input type="text" id="url" name="url" fs="支持优酷、土豆、酷六、56、乐视、搜狐" size="70" value="" /> <button id="submit" type="submit">确定</button></li>
+    <li id="result"></li>
+</ul>
+
+</body>
+</html>
